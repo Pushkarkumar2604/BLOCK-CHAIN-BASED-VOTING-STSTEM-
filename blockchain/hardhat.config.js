@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require("@nomiclabs/hardhat-ethers");
 
 module.exports = {
@@ -8,3 +9,11 @@ module.exports = {
         }
     }
 };
+=======
+require("@nomicfoundation/hardhat-toolbox");
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+  solidity: "0.8.19",
+};
+>>>>>>> d59b451b079f7f1d45c650c89b90cca9a79d3b44

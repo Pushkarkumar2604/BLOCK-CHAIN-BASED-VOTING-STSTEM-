@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const fs = require("fs");
 const path = require("path");
 
@@ -37,3 +38,18 @@ main()
         console.error(error);
         process.exit(1);
     });
+=======
+const hre = require("hardhat");
+
+async function main() {
+  const Voting = await hre.ethers.getContractFactory("Voting");
+  const voting = await Voting.deploy();
+  await voting.waitForDeployment();
+  console.log("Voting contract deployed to:", await voting.getAddress());
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+>>>>>>> d59b451b079f7f1d45c650c89b90cca9a79d3b44
