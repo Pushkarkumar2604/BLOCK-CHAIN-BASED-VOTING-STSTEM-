@@ -2192,3 +2192,139 @@ function playFraudSiren() {
         console.log("Fraud siren error:", error);
     }
 }
+// ======================================================
+// CUSTOM BLOCKCHAIN RECORDS PAGE
+// ======================================================
+
+function loadManageBlockchainPage() {
+    if (checkOnlyAdminLogin() === false) {
+        return;
+    }
+
+    loadBlockchainRecords();
+}
+
+
+async function loadBlockchainRecords() {
+    const statusBox = document.getElementById("blockchainStatusBox");
+    const recordsBox = document.getElementById("blockchainRecordsBox");
+
+    if (!statusBox || !recordsBox) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/blockchain_records`);
+        const data = await response.json();
+
+        recordsBox.innerHTML = "";
+
+        if (data.blockchain_valid === true) {
+            statusBox.innerHTML = `
+                <div class="blockchain-valid-box">
+                    ✅ ${data.verification_message}
+                </div>
+            `;
+        } else {
+            statusBox.innerHTML = `
+                <div class="blockchain-invalid-box">
+                    ❌ ${data.verification_message}
+                </div>
+            `;
+        }
+
+        if (!data.blocks || data.blocks.length === 0) {
+            recordsBox.innerHTML = `
+                <p>No blockchain records found. Cast a vote first.</p>
+            `;
+            return;
+        }
+
+        data.blocks.forEach(block => {
+            const card = document.createElement("div");
+
+            card.className = "blockchain-card";
+
+            card.innerHTML = `
+                <h3>Block #${block.block_index}</h3>
+
+                <p><strong>Voter ID:</strong> ${block.voter_id}</p>
+                <p><strong>Candidate ID:</strong> ${block.candidate_id}</p>
+                <p><strong>Candidate Name:</strong> ${block.candidate_name}</p>
+                <p><strong>Timestamp:</strong> ${block.timestamp}</p>
+
+                <p><strong>Previous Hash:</strong></p>
+                <div class="hash-box">${block.previous_hash}</div>
+
+                <p><strong>Current Hash:</strong></p>
+                <div class="hash-box">${block.current_hash}</div>
+            `;
+
+            recordsBox.appendChild(card);
+        });
+
+    } catch (error) {
+        statusBox.innerHTML = `
+            <div class="blockchain-invalid-box">
+                Unable to load blockchain records.
+            </div>
+        `;
+
+        console.log(error);
+    }
+}
+
+
+async function verifyBlockchain() {
+    const statusBox = document.getElementById("blockchainStatusBox");
+
+    if (!statusBox) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/verify_blockchain`);
+        const data = await response.json();
+
+        if (data.blockchain_valid === true) {
+            playSuccessBeep();
+
+            statusBox.innerHTML = `
+                <div class="blockchain-valid-box">
+                    ✅ ${data.message}
+                </div>
+            `;
+
+            showNormalLongPopup(
+                "success",
+                "Blockchain Verified",
+                data.message
+            );
+        } else {
+            playErrorBeep();
+
+            statusBox.innerHTML = `
+                <div class="blockchain-invalid-box">
+                    ❌ ${data.message}
+                </div>
+            `;
+
+            showNormalLongPopup(
+                "error",
+                "Blockchain Invalid",
+                data.message
+            );
+        }
+
+    } catch (error) {
+        playErrorBeep();
+
+        statusBox.innerHTML = `
+            <div class="blockchain-invalid-box">
+                Unable to verify blockchain.
+            </div>
+        `;
+
+        console.log(error);
+    }
+}

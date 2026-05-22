@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain Records</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadManageBlockchainPage()">
+
+    <nav class="navbar">
+        <div class="logo">
+            Blockchain Records
+        </div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html">Back to Dashboard</a>
+            <a href="index.html">Back to Voting</a>
+
+            <button class="logout-btn" onclick="adminLogout()">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <h1>Custom Blockchain Records</h1>
+
+        <p>
+            Every successful vote is stored as a block with previous hash and current hash.
+        </p>
+
+        <button type="button" onclick="loadBlockchainRecords()">
+            Refresh Blockchain Records
+        </button>
+
+        <button type="button" onclick="verifyBlockchain()">
+            Verify Blockchain
+        </button>
+
+        <div id="blockchainStatusBox"></div>
+
+        <div id="blockchainRecordsBox"></div>
+
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer src="script.js?v=blockchainrecords1"></script>
+
+</body>
+</html>
