@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="checkAdminLogin()">
+
+    <nav class="navbar">
+        <div class="logo">
+            Admin Dashboard
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">Back to Voting</a>
+
+            <div class="manage-dropdown">
+                <button class="manage-top-btn" onclick="toggleManageDropdown()">
+                    Manage ▼
+                </button>
+
+                <div id="manageDropdownMenu" class="manage-dropdown-menu">
+                    <a href="manage-voters.html">Manage Voters</a>
+                    <a href="manage-candidates.html">Manage Candidates</a>
+                    <a href="manage-fraud.html">Fraud Logs Details</a>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="adminLogout()">
+                Logout
+            </button>
+
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <h1>Election Results</h1>
+
+        <button onclick="loadResults()">
+            Refresh Results
+        </button>
+
+        <div id="resultsBox"></div>
+
+        <div class="chart-box">
+            <canvas id="resultChart"></canvas>
+        </div>
+
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer src="script.js"></script>
+
+</body>
+</html>

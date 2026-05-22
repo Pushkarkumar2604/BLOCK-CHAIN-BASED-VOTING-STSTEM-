@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain Voting System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadCandidates()">
+
+    <!-- TOP NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            Blockchain Voting System
+        </div>
+
+        <div class="nav-links">
+            <a href="voter-registration.html">Voter Registration</a>
+            <a href="candidate-registration.html">Candidate Registration</a>
+            <a href="admin-login.html">Admin Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- MAIN VOTING SECTION -->
+    <section class="main-voting-area">
+
+        <div class="vote-box">
+
+            <h1>Vote Securely</h1>
+
+            <p>
+                Enter your Voter ID, scan your face, and cast your vote.
+            </p>
+
+            <!-- VOTER ID -->
+            <input 
+                type="text" 
+                id="vote_voter_id" 
+                placeholder="Enter Voter ID"
+            >
+
+            <!-- FACE SCAN SECTION -->
+            <div class="face-section">
+
+                <video id="camera" autoplay></video>
+
+                <button onclick="startCamera()">
+                    Start Camera
+                </button>
+
+                <button onclick="scanFace()">
+                    Scan Face
+                </button>
+
+                <p id="faceStatus">
+                    Face not verified
+                </p>
+
+            </div>
+
+            <!-- CANDIDATE TABLE -->
+<h2>Select Candidate</h2>
+
+<div class="candidate-table-box">
+
+    <table class="candidate-table">
+
+        <thead>
+            <tr>
+                <th>Candidate Photo</th>
+                <th>Candidate Code</th>
+                <th>Candidate Name</th>
+                <th>Vote</th>
+            </tr>
+        </thead>
+
+        <tbody id="candidateTableBody">
+        </tbody>
+
+    </table>
+
+</div>
+
+            <!-- VOTE MESSAGE -->
+            <p id="voteMessage"></p>
+
+        </div>
+
+    </section>
+
+   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+   <script defer src="script.js?v=finalpopup999"></script>
+</body>
+</html>

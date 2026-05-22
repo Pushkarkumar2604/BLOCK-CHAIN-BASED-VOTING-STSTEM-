@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Candidate Registration</div>
+        <div class="nav-links">
+            <a href="index.html">Back to Voting</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+
+        <h1>Register Candidate</h1>
+
+        <input type="text" id="candidate_name" placeholder="Candidate Name">
+
+        <input type="text" id="party_name" placeholder="Party Name">
+
+        <input type="text" id="symbol" placeholder="Party Symbol Name e.g. lotus.png">
+
+        <button onclick="addCandidate()">Add Candidate</button>
+
+        <p id="candidateMessage"></p>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

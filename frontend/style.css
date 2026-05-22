@@ -1,0 +1,784 @@
+/* ======================================================
+   GLOBAL RESET
+====================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #0f172a;
+    background: linear-gradient(135deg, #020617, #0f172a, #1e1b4b, #312e81);
+    background-size: 400% 400%;
+    animation: backgroundMove 14s ease infinite;
+    overflow-x: hidden;
+}
+
+/* ======================================================
+   BACKGROUND EFFECT
+====================================================== */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(12px);
+    opacity: 0.35;
+    z-index: -1;
+}
+
+body::before {
+    width: 420px;
+    height: 420px;
+    background: #3b82f6;
+    top: 120px;
+    left: -130px;
+    animation: floatOne 9s ease-in-out infinite;
+}
+
+body::after {
+    width: 460px;
+    height: 460px;
+    background: #a855f7;
+    right: -150px;
+    bottom: -160px;
+    animation: floatTwo 11s ease-in-out infinite;
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes floatOne {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(90px, 60px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes floatTwo {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-80px, -70px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* ======================================================
+   NAVBAR
+====================================================== */
+
+.navbar {
+    width: 100%;
+    min-height: 78px;
+    padding: 0 42px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    overflow: visible;
+}
+
+.logo {
+    color: white;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: visible;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.12);
+    transition: 0.25s ease;
+}
+
+.nav-links a:hover {
+    background: white;
+    color: #1e3a8a;
+    transform: translateY(-2px);
+}
+
+/* ======================================================
+   MAIN LAYOUT
+====================================================== */
+
+.main-voting-area {
+    width: 100%;
+    padding: 55px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.vote-box,
+.dashboard-container,
+.form-container {
+    width: 94%;
+    max-width: 1120px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px);
+    border-radius: 30px;
+    padding: 44px;
+    text-align: center;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    animation: pageFade 0.55s ease-in-out;
+}
+
+.dashboard-container {
+    margin: 55px auto;
+}
+
+.form-container {
+    width: 480px;
+    margin: 75px auto;
+}
+
+@keyframes pageFade {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ======================================================
+   HEADINGS
+====================================================== */
+
+h1 {
+    color: #1e3a8a;
+    font-size: 44px;
+    margin: 0 0 14px 0;
+    font-weight: 900;
+}
+
+h2 {
+    color: #0f172a;
+    font-size: 32px;
+    margin-top: 34px;
+    font-weight: 900;
+}
+
+h3 {
+    color: #334155;
+}
+
+p {
+    color: #475569;
+    font-size: 18px;
+}
+
+/* ======================================================
+   INPUTS
+====================================================== */
+
+input {
+    width: 100%;
+    max-width: 520px;
+    padding: 16px 18px;
+    margin: 12px auto;
+    display: block;
+    font-size: 16px;
+    border-radius: 15px;
+    border: 2px solid #dbeafe;
+    outline: none;
+    background: white;
+    transition: 0.25s ease;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.16);
+}
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+button {
+    padding: 14px 24px;
+    margin: 10px 6px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.30);
+    transition: 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.42);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.vote-btn {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    padding: 13px 30px;
+}
+
+.vote-btn:hover {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+}
+
+.delete-btn,
+.logout-btn,
+.delete-all-btn {
+    background: linear-gradient(135deg, #dc2626, #f97316);
+}
+
+.delete-btn:hover,
+.logout-btn:hover,
+.delete-all-btn:hover {
+    background: linear-gradient(135deg, #b91c1c, #ea580c);
+}
+
+.register-main-btn {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+/* ======================================================
+   CAMERA
+====================================================== */
+
+.face-section,
+.camera-box {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+#camera,
+#reg_camera,
+.camera-box video {
+    width: 480px;
+    height: 320px;
+    max-width: 100%;
+    background: #020617;
+    border-radius: 24px;
+    object-fit: cover;
+    border: 5px solid #2563eb;
+    box-shadow: 0 20px 50px rgba(37, 99, 235, 0.35);
+}
+
+#faceStatus,
+#faceRegisterStatus {
+    font-size: 20px;
+    font-weight: 900;
+    margin-top: 18px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+/* ======================================================
+   VOTER REGISTRATION PAGE
+====================================================== */
+
+.registration-card {
+    max-width: 920px;
+    margin: 60px auto;
+    padding: 55px 60px;
+}
+
+.registration-card h1 {
+    font-size: 46px;
+}
+
+.page-subtitle {
+    font-size: 19px;
+    color: #475569;
+    margin-bottom: 30px;
+}
+
+.registration-form {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto 38px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.section-title {
+    margin-top: 24px;
+}
+
+/* ======================================================
+   CANDIDATE TABLE
+====================================================== */
+
+.candidate-table-box {
+    width: 100%;
+    margin-top: 32px;
+    overflow-x: auto;
+    border-radius: 24px;
+}
+
+.candidate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+}
+
+.candidate-table thead {
+    background: linear-gradient(90deg, #1d4ed8, #4f46e5, #7c3aed);
+    color: white;
+}
+
+.candidate-table th {
+    padding: 20px;
+    font-size: 17px;
+    letter-spacing: 0.3px;
+}
+
+.candidate-table td {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 17px;
+}
+
+.candidate-table tbody tr {
+    transition: 0.25s ease;
+}
+
+.candidate-table tbody tr:hover {
+    background: #eef2ff;
+    transform: scale(1.006);
+}
+
+/* ======================================================
+   PARTY / CANDIDATE IMAGE CIRCLE
+====================================================== */
+
+.candidate-photo-circle {
+    width: 78px;
+    height: 78px;
+    margin: auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dbeafe, #ede9fe);
+    border: 4px solid #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+}
+
+.candidate-photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    font-size: 30px;
+    font-weight: 900;
+    align-items: center;
+    justify-content: center;
+}
+
+.candidate-code {
+    background: linear-gradient(135deg, #dbeafe, #ede9fe);
+    color: #1e40af;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 14px;
+}
+
+/* ======================================================
+   ADMIN DASHBOARD
+====================================================== */
+
+.result-card,
+.fraud-card,
+.admin-candidate-card,
+.admin-voter-card {
+    padding: 18px 20px;
+    border-radius: 18px;
+    margin-top: 16px;
+    text-align: left;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+}
+
+.result-card {
+    background: linear-gradient(135deg, #eff6ff, #ffffff);
+    border-left: 7px solid #2563eb;
+}
+
+.fraud-card {
+    background: linear-gradient(135deg, #fee2e2, #fff7ed);
+    border-left: 7px solid #dc2626;
+}
+
+.admin-candidate-card {
+    background: linear-gradient(135deg, #f8fafc, #eff6ff);
+    border: 1px solid #dbeafe;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+}
+
+.admin-voter-card {
+    background: linear-gradient(135deg, #f8fafc, #f0fdf4);
+    border: 1px solid #bbf7d0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+}
+
+.chart-box {
+    width: 520px;
+    max-width: 100%;
+    margin: 35px auto;
+}
+
+.voted-badge {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 900;
+}
+
+.not-voted-badge {
+    background: #fef3c7;
+    color: #b45309;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 900;
+}
+
+/* ======================================================
+   MANAGE DROPDOWN
+====================================================== */
+
+.manage-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.manage-top-btn {
+    background: linear-gradient(135deg, #0ea5e9, #7c3aed);
+    color: white;
+    width: auto;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-weight: 900;
+}
+
+.manage-dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 58px;
+    width: 270px;
+    background: white;
+    padding: 12px;
+    border-radius: 18px;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.28);
+    z-index: 99999;
+}
+
+.manage-dropdown-menu a {
+    display: block;
+    width: 100%;
+    margin: 7px 0;
+    padding: 13px 15px;
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    font-weight: 900;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    transition: 0.25s ease;
+}
+
+.manage-dropdown-menu a:hover {
+    transform: translateX(4px);
+    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+}
+
+.manage-content {
+    margin-top: 28px;
+    padding: 26px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid #e0e7ff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+}
+
+/* ======================================================
+   MESSAGES
+====================================================== */
+
+#voteMessage,
+#registerMessage,
+#candidateMessage,
+#adminLoginMessage {
+    font-weight: 900;
+    margin-top: 18px;
+    font-size: 18px;
+}
+
+/* ======================================================
+   POPUPS
+====================================================== */
+
+.popup-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important;
+}
+
+.vote-popup {
+    width: 440px;
+    max-width: 90%;
+    background: white;
+    padding: 38px;
+    border-radius: 26px;
+    text-align: center;
+    box-shadow: 0 28px 75px rgba(0, 0, 0, 0.45);
+    animation: popupScale 0.28s ease-in-out;
+}
+
+.popup-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 58px;
+    font-weight: 900;
+}
+
+.success-popup .popup-icon {
+    background: #dcfce7;
+    color: #16a34a;
+    border: 5px solid #16a34a;
+}
+
+.fraud-popup .popup-icon {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 5px solid #dc2626;
+    animation: dangerPulse 0.7s infinite;
+}
+
+.error-popup .popup-icon {
+    background: #fef3c7;
+    color: #d97706;
+    border: 5px solid #d97706;
+}
+
+.success-popup h2 {
+    color: #16a34a;
+}
+
+.fraud-popup h2 {
+    color: #dc2626;
+}
+
+.error-popup h2 {
+    color: #d97706;
+}
+
+.vote-popup h2 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.vote-popup p {
+    color: #374151;
+    font-size: 18px;
+    margin-bottom: 26px;
+}
+
+@keyframes popupScale {
+    from {
+        transform: scale(0.76);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes dangerPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 30px rgba(220, 38, 38, 0.9);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 18px;
+        gap: 16px;
+    }
+
+    .nav-links {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links a,
+    .nav-links button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .manage-dropdown {
+        width: 100%;
+    }
+
+    .manage-dropdown-menu {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .vote-box,
+    .dashboard-container,
+    .form-container,
+    .registration-card {
+        width: 94%;
+        padding: 28px;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+
+    .candidate-table th,
+    .candidate-table td {
+        padding: 13px;
+        font-size: 14px;
+    }
+
+    .candidate-photo-circle {
+        width: 62px;
+        height: 62px;
+    }
+
+    .admin-candidate-card,
+    .admin-voter-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #camera,
+    #reg_camera,
+    .camera-box video {
+        width: 100%;
+        height: 260px;
+    }
+}

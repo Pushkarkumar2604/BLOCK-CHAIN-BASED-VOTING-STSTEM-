@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Admin Login</div>
+        <div class="nav-links">
+            <a href="index.html">Back to Voting</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+
+        <h1>Admin Login</h1>
+
+        <input type="password" id="admin_password" placeholder="Enter Admin Password">
+
+        <button onclick="sendAdminOTP()">Send OTP to Email</button>
+
+        <input type="text" id="admin_otp" placeholder="Enter OTP">
+
+        <button onclick="verifyAdminOTP()">Verify OTP</button>
+
+        <p id="adminLoginMessage"></p>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

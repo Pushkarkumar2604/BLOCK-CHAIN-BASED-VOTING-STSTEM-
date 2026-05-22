@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Voters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadManageVotersPage()">
+
+    <nav class="navbar">
+        <div class="logo">
+            Manage Voters
+        </div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html">Back to Dashboard</a>
+            <a href="index.html">Back to Voting</a>
+
+            <button class="logout-btn" onclick="adminLogout()">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <h1>Registered Voters</h1>
+
+        <button onclick="loadAdminVoters()">
+            Refresh Voter List
+        </button>
+
+        <button class="delete-all-btn" onclick="deleteAllVoters()">
+            Delete All Registered Voters
+        </button>
+
+        <div id="adminVoterBox"></div>
+
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer src="script.js"></script>
+
+</body>
+</html>
