@@ -9,7 +9,7 @@ import math
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 from web3 import Web3
@@ -19,6 +19,9 @@ from web3 import Web3
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "database.db")
+
+PROJECT_DIR = os.path.dirname(BASE_DIR)
+FRONTEND_DIR = os.path.join(PROJECT_DIR, "frontend")
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -221,11 +224,34 @@ def calculate_face_distance(face1, face2):
 
 # ---------------- HOME ROUTE ---------------- #
 
+# ---------------- FRONTEND ROUTES ---------------- #
+
 @app.route("/")
-def home():
+def serve_index():
+    return send_from_directory(FRONTEND_DIR, "index.html")
+
+
+@app.route("/frontend/<path:filename>")
+def serve_frontend_folder(filename):
+    return send_from_directory(FRONTEND_DIR, filename)
+
+
+@app.route("/api-health")
+def api_health():
     return "Blockchain Voting Backend Running Successfully"
 
 
+@app.route("/<path:filename>")
+def serve_frontend_files(filename):
+    file_path = os.path.join(FRONTEND_DIR, filename)
+
+    if os.path.exists(file_path):
+        return send_from_directory(FRONTEND_DIR, filename)
+
+    return jsonify({
+        "success": False,
+        "message": "Page or file not found"
+    }), 404
 # ---------------- REGISTER VOTER API ---------------- #
 
 @app.route("/register_voter", methods=["POST"])
@@ -1005,12 +1031,19 @@ def verify_admin_otp():
     })
 
 
-# ---------------- MAIN ---------------- #
+# ---------------- STARTUP ---------------- #
+
+init_db()
+
+load_blockchain_contract()
+
 
 if __name__ == "__main__":
 
-    init_db()
+    port = int(os.environ.get("PORT", 5000))
 
-    load_blockchain_contract()
-
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
+    )
