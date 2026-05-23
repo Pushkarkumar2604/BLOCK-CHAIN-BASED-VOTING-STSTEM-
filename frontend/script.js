@@ -2328,3 +2328,428 @@ async function verifyBlockchain() {
         console.log(error);
     }
 }
+// ======================================================
+// FINAL RENDER ADMIN OTP FIX
+// This forces admin OTP to use deployed backend directly
+// ======================================================
+
+console.log("FINAL RENDER ADMIN OTP FIX LOADED");
+
+async function sendAdminOTP() {
+    const passwordInput = document.getElementById("adminPassword");
+    const messageBox = document.getElementById("adminLoginMessage");
+
+    const password = passwordInput ? passwordInput.value.trim() : "";
+
+    if (password === "") {
+        if (messageBox) {
+            messageBox.innerText = "Please enter admin password";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Missing Password",
+            "Please enter admin password."
+        );
+
+        return false;
+    }
+
+    try {
+        const response = await fetch("/send_admin_otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        console.log("SEND OTP RESPONSE:", data);
+
+        if (data.success === true) {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "green";
+            }
+
+            showNormalLongPopup(
+                "success",
+                "OTP Sent",
+                data.message
+            );
+        } else {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "OTP Failed",
+                data.message
+            );
+        }
+
+        return false;
+
+    } catch (error) {
+        console.log("SEND OTP ERROR:", error);
+
+        if (messageBox) {
+            messageBox.innerText = "Backend connection failed";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Backend Error",
+            "Backend connection failed. Check Render logs."
+        );
+
+        return false;
+    }
+}
+
+
+async function verifyAdminOTP() {
+    const otpInput = document.getElementById("adminOtp");
+    const messageBox = document.getElementById("adminLoginMessage");
+
+    const otp = otpInput ? otpInput.value.trim() : "";
+
+    if (otp === "") {
+        if (messageBox) {
+            messageBox.innerText = "Please enter OTP";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Missing OTP",
+            "Please enter OTP."
+        );
+
+        return false;
+    }
+
+    try {
+        const response = await fetch("/verify_admin_otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                otp: otp
+            })
+        });
+
+        const data = await response.json();
+
+        console.log("VERIFY OTP RESPONSE:", data);
+
+        if (data.success === true) {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "green";
+            }
+
+            showNormalLongPopup(
+                "success",
+                "Login Successful",
+                "Admin login successful."
+            );
+
+            localStorage.setItem("adminLoggedIn", "true");
+
+            setTimeout(() => {
+                window.location.href = "admin-dashboard.html";
+            }, 1200);
+        } else {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "Invalid OTP",
+                data.message
+            );
+        }
+
+        return false;
+
+    } catch (error) {
+        console.log("VERIFY OTP ERROR:", error);
+
+        if (messageBox) {
+            messageBox.innerText = "Backend connection failed";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Backend Error",
+            "Backend connection failed. Check Render logs."
+        );
+
+        return false;
+    }
+}
+
+
+// Extra aliases in case your HTML uses different function names
+const sendAdminOtp = sendAdminOTP;
+const verifyAdminOtp = verifyAdminOTP;
+// ======================================================
+// FINAL ADMIN OTP FIX FOR RENDER - ALL FUNCTION NAMES
+// ======================================================
+
+console.log("FINAL ADMIN OTP FIX ALL NAMES LOADED");
+
+async function finalSendAdminOTP() {
+    const passwordInput =
+        document.getElementById("adminPassword") ||
+        document.getElementById("admin_password") ||
+        document.getElementById("password");
+
+    const messageBox =
+        document.getElementById("adminLoginMessage") ||
+        document.getElementById("adminMessage") ||
+        document.getElementById("message");
+
+    const password = passwordInput ? passwordInput.value.trim() : "";
+
+    if (password === "") {
+        if (messageBox) {
+            messageBox.innerText = "Please enter admin password";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Missing Password",
+            "Please enter admin password."
+        );
+
+        return false;
+    }
+
+    try {
+        console.log("Calling OTP API:", window.location.origin + "/send_admin_otp");
+
+        const response = await fetch(window.location.origin + "/send_admin_otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                password: password
+            })
+        });
+
+        const text = await response.text();
+
+        console.log("Raw OTP response:", text);
+
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch (error) {
+            console.log("OTP JSON parse error:", error);
+
+            if (messageBox) {
+                messageBox.innerText = "Backend returned invalid response";
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "Backend Error",
+                "Backend returned invalid response. Check Render logs."
+            );
+
+            return false;
+        }
+
+        if (data.success === true) {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "green";
+            }
+
+            showNormalLongPopup(
+                "success",
+                "OTP Sent",
+                data.message
+            );
+        } else {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "OTP Failed",
+                data.message
+            );
+        }
+
+        return false;
+
+    } catch (error) {
+        console.log("FINAL OTP FETCH ERROR:", error);
+
+        if (messageBox) {
+            messageBox.innerText = "Backend connection failed";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Backend Error",
+            "Backend connection failed. Check Render logs."
+        );
+
+        return false;
+    }
+}
+
+
+async function finalVerifyAdminOTP() {
+    const otpInput =
+        document.getElementById("adminOtp") ||
+        document.getElementById("admin_otp") ||
+        document.getElementById("otp");
+
+    const messageBox =
+        document.getElementById("adminLoginMessage") ||
+        document.getElementById("adminMessage") ||
+        document.getElementById("message");
+
+    const otp = otpInput ? otpInput.value.trim() : "";
+
+    if (otp === "") {
+        if (messageBox) {
+            messageBox.innerText = "Please enter OTP";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Missing OTP",
+            "Please enter OTP."
+        );
+
+        return false;
+    }
+
+    try {
+        console.log("Calling verify API:", window.location.origin + "/verify_admin_otp");
+
+        const response = await fetch(window.location.origin + "/verify_admin_otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                otp: otp
+            })
+        });
+
+        const text = await response.text();
+
+        console.log("Raw verify response:", text);
+
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch (error) {
+            console.log("Verify JSON parse error:", error);
+
+            if (messageBox) {
+                messageBox.innerText = "Backend returned invalid response";
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "Backend Error",
+                "Backend returned invalid response. Check Render logs."
+            );
+
+            return false;
+        }
+
+        if (data.success === true) {
+            localStorage.setItem("adminLoggedIn", "true");
+
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "green";
+            }
+
+            showNormalLongPopup(
+                "success",
+                "Login Successful",
+                "Admin login successful."
+            );
+
+            setTimeout(() => {
+                window.location.href = "admin-dashboard.html";
+            }, 1200);
+        } else {
+            if (messageBox) {
+                messageBox.innerText = data.message;
+                messageBox.style.color = "red";
+            }
+
+            showNormalLongPopup(
+                "error",
+                "Invalid OTP",
+                data.message
+            );
+        }
+
+        return false;
+
+    } catch (error) {
+        console.log("FINAL VERIFY FETCH ERROR:", error);
+
+        if (messageBox) {
+            messageBox.innerText = "Backend connection failed";
+            messageBox.style.color = "red";
+        }
+
+        showNormalLongPopup(
+            "error",
+            "Backend Error",
+            "Backend connection failed. Check Render logs."
+        );
+
+        return false;
+    }
+}
+
+
+// Make all possible old button names use the final functions
+window.sendAdminOTP = finalSendAdminOTP;
+window.sendAdminOtp = finalSendAdminOTP;
+window.sendOTP = finalSendAdminOTP;
+window.sendOtp = finalSendAdminOTP;
+window.sendAdminOTPToEmail = finalSendAdminOTP;
+window.sendOtpToEmail = finalSendAdminOTP;
+
+window.verifyAdminOTP = finalVerifyAdminOTP;
+window.verifyAdminOtp = finalVerifyAdminOTP;
+window.verifyOTP = finalVerifyAdminOTP;
+window.verifyOtp = finalVerifyAdminOTP;
+window.verifyAdminLogin = finalVerifyAdminOTP;
