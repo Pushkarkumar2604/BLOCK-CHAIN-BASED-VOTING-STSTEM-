@@ -32,8 +32,6 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "")
 GMAIL_USER = os.getenv("GMAIL_USER", "")
 GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
 
-current_admin_otp = None
-
 FACE_MATCH_THRESHOLD = 0.60
 
 
@@ -50,7 +48,6 @@ def get_db_connection():
 def add_column_if_missing(cursor, table_name, column_name, column_definition):
     cursor.execute(f"PRAGMA table_info({table_name})")
     columns = cursor.fetchall()
-
     existing_columns = [column[1] for column in columns]
 
     if column_name not in existing_columns:
@@ -133,6 +130,66 @@ def init_db():
         previous_hash TEXT NOT NULL,
         current_hash TEXT NOT NULL
     )
+    """)
+
+    # ---------------- ADMIN OTP TABLE ---------------- #
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS admin_otp (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        otp TEXT,
+        created_at TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# ======================================================
+# ADMIN OTP DATABASE FUNCTIONS
+# ======================================================
+
+def save_admin_otp(otp):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor.execute("""
+    INSERT OR REPLACE INTO admin_otp (id, otp, created_at)
+    VALUES (1, ?, ?)
+    """, (otp, created_at))
+
+    conn.commit()
+    conn.close()
+
+
+def get_saved_admin_otp():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT otp FROM admin_otp
+    WHERE id = 1
+    """)
+
+    result = cursor.fetchone()
+    conn.close()
+
+    if result:
+        return result["otp"]
+
+    return None
+
+
+def clear_admin_otp():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    DELETE FROM admin_otp
+    WHERE id = 1
     """)
 
     conn.commit()
@@ -359,9 +416,7 @@ def calculate_face_distance(face1, face2):
 def is_face_matching(stored_descriptor_text, scanned_descriptor):
     try:
         stored_descriptor = json.loads(stored_descriptor_text)
-
         distance = calculate_face_distance(stored_descriptor, scanned_descriptor)
-
         return distance <= FACE_MATCH_THRESHOLD
 
     except Exception as error:
@@ -1142,8 +1197,6 @@ def delete_all_fraud_logs():
 @app.route("/send_otp", methods=["POST", "OPTIONS"])
 @app.route("/send-admin-otp", methods=["POST", "OPTIONS"])
 def send_admin_otp():
-    global current_admin_otp
-
     if request.method == "OPTIONS":
         return jsonify({
             "success": True,
@@ -1167,12 +1220,14 @@ def send_admin_otp():
                 "message": "Invalid admin password"
             })
 
-        current_admin_otp = str(random.randint(100000, 999999))
+        otp = str(random.randint(100000, 999999))
 
-        print("Generated Admin OTP:", current_admin_otp)
+        save_admin_otp(otp)
+
+        print("Generated Admin OTP:", otp)
         print("Sending OTP to:", ADMIN_EMAIL)
 
-        email_sent = send_email_otp(ADMIN_EMAIL, current_admin_otp)
+        email_sent = send_email_otp(ADMIN_EMAIL, otp)
 
         if email_sent:
             return jsonify({
@@ -1198,8 +1253,6 @@ def send_admin_otp():
 @app.route("/verify_otp", methods=["POST", "OPTIONS"])
 @app.route("/verify-admin-otp", methods=["POST", "OPTIONS"])
 def verify_admin_otp():
-    global current_admin_otp
-
     if request.method == "OPTIONS":
         return jsonify({
             "success": True,
@@ -1217,14 +1270,19 @@ def verify_admin_otp():
 
         otp = str(data.get("otp") or data.get("adminOtp") or "").strip()
 
-        if not current_admin_otp:
+        saved_otp = get_saved_admin_otp()
+
+        print("Entered OTP:", otp)
+        print("Saved OTP:", saved_otp)
+
+        if not saved_otp:
             return jsonify({
                 "success": False,
                 "message": "OTP not generated. Please send OTP first."
             })
 
-        if otp == current_admin_otp:
-            current_admin_otp = None
+        if otp == saved_otp:
+            clear_admin_otp()
 
             return jsonify({
                 "success": True,
@@ -1247,13 +1305,16 @@ def verify_admin_otp():
 
 @app.route("/otp_config_status", methods=["GET"])
 def otp_config_status():
+    saved_otp = get_saved_admin_otp()
+
     return jsonify({
         "success": True,
         "admin_email_set": bool(ADMIN_EMAIL),
         "gmail_user_set": bool(GMAIL_USER),
         "gmail_app_password_set": bool(GMAIL_APP_PASSWORD),
         "admin_password_from_render_env": bool(os.getenv("ADMIN_PASSWORD")),
-        "admin_password_available": bool(ADMIN_PASSWORD)
+        "admin_password_available": bool(ADMIN_PASSWORD),
+        "otp_currently_saved": bool(saved_otp)
     })
 
 
