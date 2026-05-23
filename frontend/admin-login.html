@@ -9,6 +9,7 @@
 
     <nav class="navbar">
         <div class="logo">Admin Login</div>
+
         <div class="nav-links">
             <a href="index.html">Back to Voting</a>
         </div>
@@ -18,18 +19,129 @@
 
         <h1>Admin Login</h1>
 
-        <input type="password" id="admin_password" placeholder="Enter Admin Password">
+        <input
+            type="password"
+            id="adminPassword"
+            placeholder="Enter Admin Password"
+        >
 
-        <button onclick="sendAdminOTP()">Send OTP to Email</button>
+        <button onclick="sendAdminOTP()">
+            Send OTP to Email
+        </button>
 
-        <input type="text" id="admin_otp" placeholder="Enter OTP">
+        <input
+            type="text"
+            id="adminOtp"
+            placeholder="Enter OTP"
+        >
 
-        <button onclick="verifyAdminOTP()">Verify OTP</button>
+        <button onclick="verifyAdminOTP()">
+            Verify OTP
+        </button>
 
         <p id="adminLoginMessage"></p>
 
     </div>
 
-    <script defer src="script.js?v=adminfinal100"></script>
+    <script>
+        console.log("INLINE ADMIN LOGIN SCRIPT LOADED");
+
+        function showMessage(message, color) {
+            const messageBox = document.getElementById("adminLoginMessage");
+            messageBox.innerText = message;
+            messageBox.style.color = color;
+            messageBox.style.fontWeight = "900";
+        }
+
+        async function sendAdminOTP() {
+            const password = document.getElementById("adminPassword").value.trim();
+
+            if (password === "") {
+                showMessage("Please enter admin password", "red");
+                alert("Please enter admin password");
+                return;
+            }
+
+            try {
+                console.log("Calling:", window.location.origin + "/send_admin_otp");
+
+                const response = await fetch(window.location.origin + "/send_admin_otp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log("OTP response:", data);
+
+                if (data.success === true) {
+                    showMessage(data.message, "green");
+                    alert(data.message);
+                } else {
+                    showMessage(data.message, "red");
+                    alert(data.message);
+                }
+
+            } catch (error) {
+                console.log("Send OTP error:", error);
+                showMessage("Backend connection failed", "red");
+                alert("Backend connection failed. Open Render logs.");
+            }
+        }
+
+        async function verifyAdminOTP() {
+            const otp = document.getElementById("adminOtp").value.trim();
+
+            if (otp === "") {
+                showMessage("Please enter OTP", "red");
+                alert("Please enter OTP");
+                return;
+            }
+
+            try {
+                console.log("Calling:", window.location.origin + "/verify_admin_otp");
+
+                const response = await fetch(window.location.origin + "/verify_admin_otp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        otp: otp
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log("Verify response:", data);
+
+                if (data.success === true) {
+                    showMessage(data.message, "green");
+                    alert("Admin login successful");
+
+                    localStorage.setItem("adminLoggedIn", "true");
+
+                    setTimeout(() => {
+                        window.location.href = "admin-dashboard.html";
+                    }, 800);
+
+                } else {
+                    showMessage(data.message, "red");
+                    alert(data.message);
+                }
+
+            } catch (error) {
+                console.log("Verify OTP error:", error);
+                showMessage("Backend connection failed", "red");
+                alert("Backend connection failed. Open Render logs.");
+            }
+        }
+    </script>
+
 </body>
 </html>
