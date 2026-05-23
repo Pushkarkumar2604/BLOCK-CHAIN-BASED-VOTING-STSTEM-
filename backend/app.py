@@ -1316,6 +1316,47 @@ def otp_config_status():
         "admin_password_available": bool(ADMIN_PASSWORD),
         "otp_currently_saved": bool(saved_otp)
     })
+# ======================================================
+# SIMPLE ADMIN LOGIN WITHOUT OTP
+# ======================================================
+
+@app.route("/admin_login", methods=["POST", "OPTIONS"])
+def admin_login():
+    if request.method == "OPTIONS":
+        return jsonify({
+            "success": True,
+            "message": "CORS preflight OK"
+        })
+
+    try:
+        data = request.get_json(silent=True)
+
+        if data is None:
+            return jsonify({
+                "success": False,
+                "message": "Invalid request data"
+            }), 400
+
+        password = str(data.get("password") or "").strip()
+
+        if password == ADMIN_PASSWORD:
+            return jsonify({
+                "success": True,
+                "message": "Admin login successful"
+            })
+
+        return jsonify({
+            "success": False,
+            "message": "Invalid admin password"
+        })
+
+    except Exception as error:
+        print("admin_login backend error:", str(error))
+
+        return jsonify({
+            "success": False,
+            "message": "Backend error during admin login"
+        }), 500
 
 
 # ======================================================
