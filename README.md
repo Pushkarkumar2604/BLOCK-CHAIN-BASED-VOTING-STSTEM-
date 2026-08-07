@@ -1,2 +1,2 @@
 # blockchain-voting-system
-Author- Pushkar
+Author- Pushkar singh
