@@ -7,27 +7,39 @@ Traditional voting models often suffer from centralized vulnerabilities, suscept
 By anchoring every ballot directly to an immutable ledger, the system guarantees a tamper-proof voting lifecycle, robust auditability, and absolute execution of the one-voter, one-vote principle.
 
 ✨ Key Capabilities & Architectural Modules
+
+
 👤 Voter Portal
 Biometric Identity Assurance: Integrated facial verification alongside OTP multi-factor authentication to ensure biometric continuity.
 Algorithmic Fraud Prevention: Automated duplicate-voter detection and state validation mechanisms to strictly enforce single-ballot casting.
 Cryptographic Confirmation: Real-time feedback and cryptographic verification upon successful block submission.
+
+
 🚩 Candidate Management Engine
 Streamlined Onboarding: Seamless candidate profile setup, manifesto publication, and symbolic media integration.
 Transparent Rosters: Automated, immutable indexing of participating candidates across active electoral races.
+
+
 🛡️ Administrative Command Center
 Role-Based Governance: High-security administrative portals governed by multi-factor authentication.
 Live System Monitoring: Real-time audit logs, anomaly detection, and fraud pattern tracking.
 Automated Ledger Compilation: Instantaneous, tamper-evident election result aggregation powered by smart-contract state queries.
+
+
 ⛓️ Decentralized Blockchain Core
 Cryptographic Immutability: State updates governed by customized Solidity smart contracts.
 Web3 Integration: Low-latency blockchain communications powered by Ethers.js and verified on local Hardhat node clusters.
 Tamper-Resistant Storage: Distributed ledger storage that structurally prevents retroactive record manipulation.
+
+
 🛠️ Technology Stack & System Topology
 Subsystem	Stack / Tools	Operational Purpose
 Frontend UI	React.js, JavaScript (ES6+), HTML5, CSS3	Reactive, high-performance user & administrator interfaces
 Backend API	Python, Flask, SQLite	Identity processing, API gateway orchestration, & business logic
 Distributed Ledger	Solidity, Hardhat, Ethers.js	Smart contract compilation, automated state execution, & Web3 interaction
 Version Control	Git, GitHub	Distributed version management & collaborative codebase control
+
+
 📐 System Architecture
         ┌─────────────────────┐
         │     User / Admin    │
@@ -63,11 +75,15 @@ Step 4: Provision Blockchain Network (Hardhat) In a tertiary terminal instance:
 
 Bash cd blockchain npm install npx hardhat node Execute smart contract compilation and deployment scripts to complete setup.
 
+
+
 🔐 Security Standards & Defenses Biometric & OTP Verification: Multi-layered access checks ensuring non-repudiation.
 
 Immutable State Updates: Ledger entries protected by cryptographic hashing algorithms.
 
 Proactive Anomaly Logging: Automated tracking of unauthorized transaction attempts or state discrepancies.
+
+
 
 🔮 Roadmap & Future Enhancements Decentralized Identity (DID): Transitioning toward Self-Sovereign Identity (SSI) frameworks.
 
